@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Edukasi Phishing - Bank Digital</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a237e, #283593);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .warning-banner {
+            background-color: #ffeb3b;
+            border-left: 6px solid #ff9800;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .simulation-panel {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .info-panel {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        h2 {
+            color: #1a237e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eaf6;
+        }
+        
+        h3 {
+            color: #3949ab;
+            margin: 20px 0 10px 0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus {
+            border-color: #3949ab;
+            outline: none;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #1a237e, #3949ab);
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(135deg, #3949ab, #1a237e);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        
+        .btn-secondary {
+            background: #f5f7fa;
+            color: #3949ab;
+            border: 1px solid #3949ab;
+        }
+        
+        .btn-secondary:hover {
+            background: #e8eaf6;
+        }
+        
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #4caf50;
+            display: none;
+        }
+        
+        .data-log {
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 25px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .log-entry {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+        
+        .timestamp {
+            color: #666;
+            font-size: 12px;
+        }
+        
+        .red-flag {
+            background-color: #ffebee;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #f44336;
+        }
+        
+        .green-flag {
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #4caf50;
+        }
+        
+        ul {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            margin-top: 40px;
+            color: #666;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+        }
+        
+        .danger {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>SIMULASI EDUKASI PHISHING</h1>
+        <p class="subtitle">Belajar mengenali dan menghindari penipuan phishing melalui simulasi interaktif</p>
+    </header>
+    
+    <div class="warning-banner">
+        ⚠️ PERHATIAN: Ini adalah simulasi edukasi untuk pembelajaran tentang cara kerja phishing. Jangan gunakan untuk tujuan ilegal.
+    </div>
+    
+    <div class="container">
+        <div class="simulation-panel">
+            <h2>Simulasi Halaman Login Palsu</h2>
+            <p>Ini adalah contoh halaman login palsu yang mungkin dikirimkan oleh penyerang phishing. Coba masukkan data dummy (bukan data asli) dan lihat apa yang terjadi.</p>
+            
+            <div class="red-flag">
+                <strong>Tanda peringatan phishing pada halaman ini:</strong>
+                <ul>
+                    <li>URL tidak menggunakan HTTPS (aman)</li>
+                    <li>Tidak ada logo resmi bank</li>
+                    <li>Desain terlihat mirip tetapi tidak persis sama dengan aslinya</li>
+                </ul>
+            </div>
+            
+            <form id="phishingForm">
+                <div class="form-group">
+                    <label for="username">Nama Pengguna / Email</label>
+                    <input type="text" id="username" placeholder="contoh: user@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Kata Sandi</label>
+                    <input type="password" id="password" placeholder="Masukkan kata sandi">
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Nomor Telepon</label>
+                    <input type="text" id="phone" placeholder="0812-3456-7890">
+                </div>
+                
+                <button type="submit" class="btn">Masuk ke Akun</button>
+                <button type="button" id="clearBtn" class="btn btn-secondary">Hapus Data Simulasi</button>
+            </form>
+            
+            <div id="result" class="result">
+                <h3>Hasil Simulasi:</h3>
+                <p id="resultText"></p>
+                <p><strong>Data yang "dicuri" oleh penyerang phishing:</strong></p>
+                <div id="stolenData"></div>
+            </div>
+            
+            <div class="data-log">
+                <h3>Log Data "Korban" (Disimpan di LocalStorage)</h3>
+                <div id="dataLog"></div>
+            </div>
+        </div>
+        
+        <div class="info-panel">
+            <h2>Apa itu Phishing?</h2>
+            <p>Phishing adalah upaya penipuan dengan menyamar sebagai entitas tepercaya (seperti bank, perusahaan, atau layanan populer) untuk mencuri informasi sensitif seperti kata sandi, detail kartu kredit, atau data pribadi lainnya.</p>
+            
+            <h3>Cara Mengenali Serangan Phishing:</h3>
+            <ul>
+                <li><strong>Email atau pesan tidak diminta</strong> yang meminta informasi pribadi</li>
+                <li><strong>URL mencurigakan</strong> yang tidak cocok dengan situs resmi</li>
+                <li><strong>Kesalahan tata bahasa</strong> dan ejaan yang buruk</li>
+                <li><strong>Rasa urgensi</strong> yang dibuat-buat ("Akun Anda akan ditutup dalam 24 jam!")</li>
+                <li><strong>Permintaan informasi sensitif</strong> melalui email atau pesan</li>
+            </ul>
+            
+            <div class="green-flag">
+                <strong>Cara Melindungi Diri dari Phishing:</strong>
+                <ul>
+                    <li>Selalu periksa URL situs web sebelum memasukkan informasi</li>
+                    <li>Cari ikon gembok (HTTPS) di bilah alamat browser</li>
+                    <li>Jangan klik tautan dalam email yang mencurigakan</li>
+                    <li>Gunakan autentikasi dua faktor (2FA) jika tersedia</li>
+                    <li>Laporkan upaya phishing kepada organisasi yang disamar</li>
+                </ul>
+            </div>
+            
+            <h3>Teknik Phishing Umum:</h3>
+            <ul>
+                <li><strong>Spear Phishing:</strong> Target spesifik dengan informasi pribadi</li>
+                <li><strong>Whaling:</strong> Menargetkan eksekutif level tinggi</li>
+                <li><strong>Clone Phishing:</strong> Menyalin email sah dengan tautan berbahaya</li>
+                <li><strong>Vishing:</strong> Phishing melalui panggilan telepon</li>
+                <li><strong>Smishing:</strong> Phishing melalui SMS</li>
+            </ul>
+            
+            <button id="tipsBtn" class="btn btn-secondary">Tips Keamanan Lainnya</button>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Simulasi ini hanya untuk tujuan pendidikan. Pengetahuan tentang phishing membantu melindungi Anda dari serangan dunia maya.</p>
+        <p class="danger">⚠️ JANGAN PERNAH membagikan informasi pribadi atau sensitif di situs web yang mencurigakan.</p>
+        <p>© 2023 Simulasi Edukasi Keamanan Siber. Semua hak dilindungi untuk tujuan pendidikan.</p>
+    </footer>
+
+    <script>
+        // Memuat data dari localStorage saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStoredData();
+            
+            // Menangani pengiriman formulir phishing simulasi
+            document.getElementById('phishingForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Mengambil nilai dari formulir
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const phone = document.getElementById('phone').value;
+                
+                // Validasi input
+                if (!username || !password || !phone) {
+                    alert('Harap isi semua bidang untuk simulasi!');
+                    return;
+                }
+                
+                // Simulasi "pencurian" data - dalam kasus nyata, data ini akan dikirim ke server penyerang
+                const stolenData = {
+                    username: username,
+                    password: password,
+                    phone: phone,
+                    timestamp: new Date().toLocaleString('id-ID'),
+                    ip: 'Simulasi: Tidak dapat mengambil IP di browser'
+                };
+                
+                // Simpan data ke localStorage (simulasi penyimpanan data korban)
+                saveToLocalStorage(stolenData);
+                
+                // Tampilkan hasil simulasi
+                showResult(stolenData);
+                
+                // Reset formulir
+                document.getElementById('phishingForm').reset();
+            });
+            
+            // Tombol untuk menghapus data simulasi
+            document.getElementById('clearBtn').addEventListener('click', function() {
+                if (confirm('Apakah Anda yakin ingin menghapus semua data simulasi?')) {
+                    localStorage.removeItem('phishingData');
+                    loadStoredData();
+                    document.getElementById('result').style.display = 'none';
+                    alert('Data simulasi telah dihapus!');
+                }
+            });
+            
+            // Tombol tips keamanan
+            document.getElementById('tipsBtn').addEventListener('click', function() {
+                alert('Tips Keamanan:\n\n1. Selalu gunakan kata sandi yang unik untuk setiap akun\n2. Aktifkan autentikasi dua faktor (2FA) bila memungkinkan\n3. Perbarui perangkat lunak dan sistem operasi secara teratur\n4. Gunakan antivirus dan firewall\n5. Waspadai tautan dan lampiran email yang mencurigakan\n6. Periksa izin aplikasi sebelum menginstal\n7. Gunakan VPN di jaringan Wi-Fi publik\n8. Cadangkan data penting secara teratur');
+            });
+        });
+        
+        // Fungsi untuk menyimpan data ke localStorage
+        function saveToLocalStorage(data) {
+            // Ambil data yang ada dari localStorage
+            let storedData = JSON.parse(localStorage.getItem('phishingData')) || [];
+            
+            // Tambahkan data baru
+            storedData.push(data);
+            
+            // Simpan kembali ke localStorage (maksimal 10 entri untuk demo)
+            if (storedData.length > 10) {
+                storedData = storedData.slice(-10);
+            }
+            
+            localStorage.setItem('phishingData', JSON.stringify(storedData));
+            
+            // Perbarui tampilan log
+            loadStoredData();
+        }
+        
+        // Fungsi untuk memuat dan menampilkan data dari localStorage
+        function loadStoredData() {
+            const storedData = JSON.parse(localStorage.getItem('phishingData')) || [];
+            const dataLog = document.getElementById('dataLog');
+            
+            if (storedData.length === 0) {
+                dataLog.innerHTML = '<p class="log-entry">Belum ada data simulasi yang disimpan.</p>';
+                return;
+            }
+            
+            // Tampilkan data dalam urutan terbalik (terbaru pertama)
+            let logHTML = '';
+            storedData.slice().reverse().forEach((data, index) => {
+                logHTML += `
+                    <div class="log-entry">
+                        <div class="timestamp">${data.timestamp}</div>
+                        <div><strong>Pengguna:</strong> ${data.username}</div>
+                        <div><strong>Kata Sandi:</strong> ${maskPassword(data.password)}</div>
+                        <div><strong>Telepon:</strong> ${data.phone}</div>
+                    </div>
+                `;
+            });
+            
+            dataLog.innerHTML = logHTML;
+        }
+        
+        // Fungsi untuk menyembunyikan kata sandi
+        function maskPassword(password) {
+            return '•'.repeat(password.length);
+        }
+        
+        // Fungsi untuk menampilkan hasil simulasi
+        function showResult(data) {
+            const resultDiv = document.getElementById('result');
+            const resultText = document.getElementById('resultText');
+            const stolenDataDiv = document.getElementById('stolenData');
+            
+            // Tampilkan pesan hasil
+            resultText.textContent = `Simulasi berhasil! Data Anda telah "dicuri" oleh penyerang phishing. Dalam skenario nyata, penyerang sekarang dapat mengakses akun Anda.`;
+            
+            // Tampilkan data yang "dicuri"
+            stolenDataDiv.innerHTML = `
+                <ul>
+                    <li><strong>Nama Pengguna/Email:</strong> ${data.username}</li>
+                    <li><strong>Kata Sandi:</strong> ${data.password}</li>
+                    <li><strong>Nomor Telepon:</strong> ${data.phone}</li>
+                    <li><strong>Waktu:</strong> ${data.timestamp}</li>
+                </ul>
+                <p>Dalam serangan phishing nyata, data ini akan dikirim ke server penyerang dan dapat digunakan untuk:</p>
+                <ul>
+                    <li>Mengakses akun bank atau media sosial Anda</li>
+                    <li>Melakukan penipuan identitas</li>
+                    <li>Mengirim phishing ke kontak Anda</li>
+                    <li>Melakukan transaksi keuangan ilegal</li>
+                </ul>
+            `;
+            
+            // Tampilkan div hasil
+            resultDiv.style.display = 'block';
+            
+            // Scroll ke hasil
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
